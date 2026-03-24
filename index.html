@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🤖 סדנת AI לילדים</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Rubik', sans-serif;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1a4e 30%, #0d1b3e 70%, #0a0e27 100%);
+    min-height: 100vh;
+    color: #fff;
+    overflow-x: hidden;
+  }
+
+  .stars {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle var(--dur) ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .header h1 {
+    font-size: 2.2em;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffd700, #ff8c00, #ff6347);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    margin-bottom: 8px;
+  }
+  .header .subtitle {
+    font-size: 1.1em;
+    color: #b8c5ff;
+    font-weight: 400;
+  }
+  .header .emoji-row {
+    font-size: 2em;
+    margin: 12px 0;
+    letter-spacing: 8px;
+  }
+
+  .zoom-btn {
+    display: block;
+    background: linear-gradient(135deg, #2d8cff, #0066ff);
+    color: #fff;
+    text-decoration: none;
+    padding: 18px 24px;
+    border-radius: 16px;
+    font-size: 1.4em;
+    font-weight: 700;
+    text-align: center;
+    margin: 20px 0;
+    box-shadow: 0 4px 20px rgba(45, 140, 255, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .zoom-btn:hover { transform: scale(1.03); box-shadow: 0 6px 30px rgba(45, 140, 255, 0.7); }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 4px 20px rgba(45, 140, 255, 0.5); }
+    50% { box-shadow: 0 4px 35px rgba(45, 140, 255, 0.8); }
+  }
+  .zoom-btn .zoom-icon { font-size: 1.2em; }
+
+  .section-title {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #ffd700;
+    text-align: center;
+    margin: 28px 0 16px;
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 20px 12px;
+    transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+  }
+  .tool-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255,255,255,0.12);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  }
+  .tool-card .icon {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+  }
+  .tool-card .name {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .tool-card .desc {
+    font-size: 0.78em;
+    color: #a0b0d0;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .tool-card.gemini { border-color: rgba(66, 133, 244, 0.4); }
+  .tool-card.gemini:hover { box-shadow: 0 8px 25px rgba(66, 133, 244, 0.3); }
+  .tool-card.sites { border-color: rgba(52, 168, 83, 0.4); }
+  .tool-card.sites:hover { box-shadow: 0 8px 25px rgba(52, 168, 83, 0.3); }
+  .tool-card.suno { border-color: rgba(168, 85, 247, 0.4); }
+  .tool-card.suno:hover { box-shadow: 0 8px 25px rgba(168, 85, 247, 0.3); }
+  .tool-card.veo { border-color: rgba(234, 67, 53, 0.4); }
+  .tool-card.veo:hover { box-shadow: 0 8px 25px rgba(234, 67, 53, 0.3); }
+
+  .full-width {
+    grid-column: 1 / -1;
+  }
+
+  .bonus-tag {
+    display: inline-block;
+    background: rgba(168, 85, 247, 0.3);
+    color: #d8b4fe;
+    font-size: 0.65em;
+    padding: 2px 8px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .what-we-build {
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .what-we-build h3 {
+    color: #ffd700;
+    font-size: 1.1em;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .build-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .build-list li {
+    font-size: 1em;
+    padding: 8px 0;
+    text-align: center;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #6070a0;
+    font-size: 0.85em;
+  }
+  .footer a { color: #8090c0; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="container">
+  <div class="header">
+    <div class="emoji-row">🎨 🎬 📖 🌐 🎮</div>
+    <h1>סדנת AI לילדים</h1>
+    <div class="subtitle">יוצרים עם בינה מלאכותית! ✨</div>
+  </div>
+
+  <a href="https://edu-il.zoom.us/j/5999136442" class="zoom-btn" target="_blank">
+    <span class="zoom-icon">🎥</span> היכנסו לזום!
+  </a>
+
+  <div class="section-title">🛠️ הכלים שלנו היום</div>
+
+  <div class="tools-grid">
+    <a href="https://gemini.google.com" target="_blank" class="tool-card gemini">
+      <div class="icon">✨</div>
+      <div class="name">Gemini</div>
+      <div class="desc">תמונות, טקסטים ויצירה עם AI של גוגל</div>
+    </a>
+
+    <a href="https://sites.google.com/new" target="_blank" class="tool-card sites">
+      <div class="icon">🌐</div>
+      <div class="name">Google Sites</div>
+      <div class="desc">בונים אתר אינטרנט בקלות</div>
+    </a>
+
+    <a href="https://suno.com" target="_blank" class="tool-card suno">
+      <span class="bonus-tag">⭐ אם נספיק</span>
+      <div class="icon">🎵</div>
+      <div class="name">Suno</div>
+      <div class="desc">יוצרים שירים ומוזיקה עם AI</div>
+    </a>
+
+    <a href="https://labs.google/fx/tools/video-fx" target="_blank" class="tool-card veo">
+      <span class="bonus-tag">⭐ אם נספיק</span>
+      <div class="icon">🎬</div>
+      <div class="name">Veo 3</div>
+      <div class="desc">יוצרים סרטונים עם AI של גוגל</div>
+    </a>
+  </div>
+
+  <div class="what-we-build">
+    <h3>מה נבנה היום? 🚀</h3>
+    <ul class="build-list">
+      <li>🎨 תמונות AI</li>
+      <li>🎬 סרטון אנימציה</li>
+      <li>📖 ספרון דיגיטלי</li>
+      <li>🌐 אתר אינטרנט</li>
+      <li>🎮 משחקים</li>
+      <li>🎵 מוזיקה</li>
+    </ul>
+  </div>
+
+  <a href="https://edu-il.zoom.us/j/5999136442" class="zoom-btn" target="_blank">
+    🚀 בואו נתחיל!
+  </a>
+
+  <div class="footer">
+    סדנת AI לילדים | חינם | <a href="https://shemesh613.github.io/ai-kids-workshop/">דף ההרשמה</a>
+  </div>
+</div>
+
+<script>
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 80; i++) {
+  const star = document.createElement('div');
+  star.className = 'star';
+  const size = Math.random() * 3 + 1;
+  star.style.width = size + 'px';
+  star.style.height = size + 'px';
+  star.style.left = Math.random() * 100 + '%';
+  star.style.top = Math.random() * 100 + '%';
+  star.style.setProperty('--dur', (Math.random() * 3 + 2) + 's');
+  star.style.animationDelay = Math.random() * 5 + 's';
+  starsEl.appendChild(star);
+}
+</script>
+</body>
+</html>
